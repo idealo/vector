@@ -63,6 +63,9 @@ data:
       type = "vector"
       inputs = ["kubernetes_logs"]
       address = "vector-aggregator:9000"
+    # Capture the metrics from the host.
+    [sources.host_metrics]
+      type = "host_metrics"
     
     # Emit internal Vector metrics.
     [sources.internal_metrics]
@@ -70,7 +73,7 @@ data:
     # Expose metrics for scraping in the Prometheus format.
     [sinks.prometheus_sink]
       type = "prometheus"
-      inputs = ["internal_metrics"]
+      inputs = ["internal_metrics","host_metrics"]
       address = "0.0.0.0:9090"
 ---
 # Source: vector/charts/vector-aggregator/templates/configmap.yaml
@@ -214,7 +217,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 4f9264d4d898bb5c5b1070e48a32fc42a233596993e7b9622cc673bd42df9466
+        checksum/config: dffa0a3fbd4f359b907a765641c8b0b6ef46b182ab5d6a7079e154b6b32b4d8b
         
       labels:
         app.kubernetes.io/name: vector-agent

@@ -46,6 +46,9 @@ data:
     # Ingest logs from Kubernetes.
     [sources.kubernetes_logs]
       type = "kubernetes_logs"
+    # Capture the metrics from the host.
+    [sources.host_metrics]
+      type = "host_metrics"
     
     # Emit internal Vector metrics.
     [sources.internal_metrics]
@@ -53,7 +56,7 @@ data:
     # Expose metrics for scraping in the Prometheus format.
     [sinks.prometheus_sink]
       type = "prometheus"
-      inputs = ["internal_metrics"]
+      inputs = ["internal_metrics","host_metrics"]
       address = "0.0.0.0:9090"
 ---
 # Source: vector-agent/templates/rbac.yaml
@@ -113,7 +116,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 3dac4d3f040851abd23fb5bf6d48a5babbd001e35aaa5465fa23e45816918c14
+        checksum/config: 5f9a80da7ce50b7018ac74181428849dd41465b2ce7d54bef29b29c5f9633b52
         
       labels:
         app.kubernetes.io/name: vector-agent
