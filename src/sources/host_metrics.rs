@@ -28,6 +28,8 @@ use heim::{
     units::{information::byte, time::second},
     Error,
 };
+#[cfg(target_os = "linux")]
+use heim_runtime;
 use serde::{
     de::{self, Visitor},
     Deserialize, Deserializer, Serialize, Serializer,
@@ -690,6 +692,22 @@ fn add_collector(collector: &str, mut metrics: Vec<Metric>) -> Vec<Metric> {
         (metric.tags.as_mut().unwrap()).insert("collector".into(), collector.into());
     }
     metrics
+}
+
+#[cfg(target_os = "linux")]
+pub fn maybe_set_roots() {
+    let virt = futures::executor::block_on(heim::virt::detect());
+
+    if let Some(virtualized) = virt {
+        if virtualized.is_container() {
+            if std::env::var_os("PROCFS_ROOT").is_some() {
+                heim_runtime::linux::set_procfs_root("PROCFS_ROOT".to_string());
+            }
+            if std::env::var_os("SYSFS_ROOT").is_some() {
+                heim_runtime::linux::set_sysfs_root("PROCFS_ROOT".to_string());
+            }
+        }
+    }
 }
 
 impl FilterList {

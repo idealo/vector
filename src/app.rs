@@ -13,6 +13,8 @@ use futures::{
 };
 use futures01::sync::mpsc;
 
+#[cfg(feature = "sources-host_metrics")]
+use crate::sources::host_metrics::maybe_set_roots;
 #[cfg(feature = "api-client")]
 use crate::top;
 #[cfg(feature = "api")]
@@ -50,6 +52,9 @@ impl Application {
 
     pub fn prepare_from_opts(opts: Opts) -> Result<Self, exitcode::ExitCode> {
         openssl_probe::init_ssl_cert_env_vars();
+
+        #[cfg(feature = "sources-host_metrics")]
+        maybe_set_roots();
 
         let level = std::env::var("LOG").unwrap_or_else(|_| match opts.log_level() {
             "off" => "off".to_owned(),
