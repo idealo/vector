@@ -45,7 +45,7 @@ impl Expression for Arithmetic {
 
         let lhs_def = self.lhs.type_def(state);
         let rhs_def = self.rhs.type_def(state);
-        let type_def = lhs_def | rhs_def;
+        let type_def = lhs_def.clone() | rhs_def.clone();
 
         match self.op {
             Or if lhs_def.kind.is_null() => rhs_def,
@@ -86,8 +86,8 @@ mod tests {
                 Operator::Or,
             ),
             def: TypeDef {
-                fallible: false,
                 kind: Kind::Bytes,
+                ..Default::default()
             },
         }
 
@@ -98,8 +98,8 @@ mod tests {
                 Operator::Or,
             ),
             def: TypeDef {
-                fallible: false,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -112,6 +112,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Bytes | Kind::Integer | Kind::Float,
+                ..Default::default()
             },
         }
 
@@ -124,6 +125,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Bytes | Kind::Integer | Kind::Float,
+                ..Default::default()
             },
         }
 
@@ -136,6 +138,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Integer | Kind::Float,
+                ..Default::default()
             },
         }
 
@@ -148,6 +151,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Integer | Kind::Float,
+                ..Default::default()
             },
         }
 
@@ -160,6 +164,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Integer | Kind::Float,
+                ..Default::default()
             },
         }
 
@@ -170,8 +175,8 @@ mod tests {
                 Operator::And,
             ),
             def: TypeDef {
-                fallible: false,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -182,8 +187,8 @@ mod tests {
                 Operator::Equal,
             ),
             def: TypeDef {
-                fallible: false,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -194,8 +199,8 @@ mod tests {
                 Operator::NotEqual,
             ),
             def: TypeDef {
-                fallible: false,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -208,6 +213,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -220,6 +226,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -232,6 +239,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
 
@@ -244,6 +252,7 @@ mod tests {
             def: TypeDef {
                 fallible: true,
                 kind: Kind::Boolean,
+                ..Default::default()
             },
         }
     ];
